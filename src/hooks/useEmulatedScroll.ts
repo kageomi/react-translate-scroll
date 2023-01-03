@@ -76,16 +76,17 @@ const useEmulatedScroll = ({
       const scrollWidth = scrollSize.width
       const minScrollWidth = -1 * (scrollWidth - containerSize.width)
       const minScrollHeight = -1 * (scrollHeight - containerSize.height)
+      const { top, left } = scroll
+      const nextLeft = Math.min(Math.max(left - deltaX, minScrollWidth), 0)
+      const nextTop = Math.min(Math.max(top - deltaY, minScrollHeight), 0)
+      if (top === nextTop && left === nextLeft) return
       setScroll(state => {
-        const { top, left } = state
-        const nextLeft = Math.min(Math.max(left - deltaX, minScrollWidth), 0)
-        const nextTop = Math.min(Math.max(top - deltaY, minScrollHeight), 0)
         return { ...state, top: nextTop, left: nextLeft }
       })
       scrollingTimer && clearTimeout(scrollingTimer)
       setScrollingTimer(setTimeout(() => setScrollingTimer(null), 100))
     },
-    [scrollSize, scrollingTimer]
+    [scrollSize, scroll, scrollingTimer]
   )
 
   const handleWheel = useCallback(

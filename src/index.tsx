@@ -55,20 +55,24 @@ const TranslateScrollBox: FC<Props> = ({
       <TransformScrollInner ref={innerRef}>{children}</TransformScrollInner>
       {scrollSize && containerSize && (
         <>
-          <TScrollBar
-            scrollSize={scrollSize}
-            containerSize={containerSize}
-            scroll={scrollForBar}
-            type="horizontal"
-            isVisible={isScrolling}
-          />
-          <TScrollBar
-            scrollSize={scrollSize}
-            containerSize={containerSize}
-            scroll={scrollForBar}
-            type="vertical"
-            isVisible={isScrolling}
-          />
+          {scrollSize.width > containerSize.width && (
+            <TScrollBar
+              scrollSize={scrollSize}
+              containerSize={containerSize}
+              scroll={scrollForBar}
+              type="horizontal"
+              isVisible={isScrolling}
+            />
+          )}
+          {scrollSize.height > containerSize.height && (
+            <TScrollBar
+              scrollSize={scrollSize}
+              containerSize={containerSize}
+              scroll={scrollForBar}
+              type="vertical"
+              isVisible={isScrolling}
+            />
+          )}
         </>
       )}
     </TransformScrollBox>
