@@ -1,13 +1,15 @@
-import React, { FC, useRef, useMemo } from 'react'
+import React, { FC, useRef, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
 import { TScrollBar } from './components/TScrollBar'
 import { useEmulatedScroll } from './hooks/useEmulatedScroll'
+import { ScrollState } from './hooks/useEmulatedScroll'
 
 type Props = {
   scrollTop?: number
   scrollLeft?: number
   style?: React.CSSProperties
   children?: JSX.Element | JSX.Element[]
+  onScroll?: (position: ScrollState) => void
 }
 
 const TransformScrollBox = styled.div`
@@ -25,7 +27,8 @@ const TranslateScrollBox: FC<Props> = ({
   scrollTop = 0,
   scrollLeft = 0,
   children,
-  style
+  style,
+  onScroll
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
@@ -36,14 +39,18 @@ const TranslateScrollBox: FC<Props> = ({
     containerRef,
     innerRef,
     defaultScroll: {
-      top: scrollTop,
-      left: scrollLeft
+      top: -1 * scrollTop,
+      left: -1 * scrollLeft
     }
   })
   const scrollForBar = useMemo(
     () => ({ top: -1 * scroll.top, left: -1 * scroll.left }),
     [scroll]
   )
+
+  useEffect(() => {
+    onScroll && onScroll(scrollForBar)
+  }, [scrollForBar])
 
   return (
     <TransformScrollBox
