@@ -168,3 +168,4 @@ const useEmulatedScroll = ({
 }
 
 export { useEmulatedScroll }
+export type { ScrollState }
