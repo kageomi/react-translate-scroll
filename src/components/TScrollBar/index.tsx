@@ -21,7 +21,7 @@ type Props = {
   isVisible?: boolean
 }
 
-const defaultColor = 'rgba(200,200,200,.5)'
+const defaultColor = 'rgba(100,100,100,.5)'
 
 const TScrollBar: FC<Props> = ({
   color = defaultColor,
