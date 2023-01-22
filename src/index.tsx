@@ -69,10 +69,10 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="horizontal"
               isVisible={isScrolling}
-              onMouseMove={verticalBarDrug.onMouseMove}
-              onMouseDown={verticalBarDrug.onMouseDown}
-              onMouseUp={verticalBarDrug.onMouseUp}
-              onMouseOut={verticalBarDrug.onMouseOut}
+              onMouseMove={horizontalBarDrug.onMouseMove}
+              onMouseDown={horizontalBarDrug.onMouseDown}
+              onMouseUp={horizontalBarDrug.onMouseUp}
+              onMouseLeave={horizontalBarDrug.onMouseLeave}
             />
           )}
           {scrollSize.height > containerSize.height && (
@@ -82,10 +82,10 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="vertical"
               isVisible={isScrolling}
-              onMouseMove={horizontalBarDrug.onMouseMove}
-              onMouseDown={horizontalBarDrug.onMouseDown}
-              onMouseUp={horizontalBarDrug.onMouseUp}
-              onMouseOut={horizontalBarDrug.onMouseOut}
+              onMouseMove={verticalBarDrug.onMouseMove}
+              onMouseDown={verticalBarDrug.onMouseDown}
+              onMouseUp={verticalBarDrug.onMouseUp}
+              onMouseLeave={verticalBarDrug.onMouseLeave}
             />
           )}
         </>

@@ -17,7 +17,7 @@ const useDrug = () => {
   const onMouseUp: MouseEventHandler = useCallback(event => {
     setIsMouseOn(false)
   }, [])
-  const onMouseOut: MouseEventHandler = useCallback(event => {
+  const onMouseLeave: MouseEventHandler = useCallback(event => {
     setIsMouseOn(false)
   }, [])
   const onMouseMove: MouseEventHandler = useCallback(event => {
@@ -33,7 +33,7 @@ const useDrug = () => {
       onMouseUp,
       onMouseDown,
       onMouseMove,
-      onMouseOut
+      onMouseLeave
     }
   ] as const
 }

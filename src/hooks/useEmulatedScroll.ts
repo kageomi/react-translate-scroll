@@ -40,12 +40,10 @@ const useEmulatedScroll = ({
     top: -1 * defaultScroll.top,
     left: -1 * defaultScroll.left
   })
-
   const [touchLog, setTouchLog] = useState<TouchLog>({
     start: null,
     previous: null
   })
-
   const [scrollingTimer, setScrollingTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null)
@@ -73,6 +71,29 @@ const useEmulatedScroll = ({
     }
   }, [touchLog, scrollSize, containerSize, scrollingTimer]) // need to set state being used by handle functions
 
+  useEffect(() => {
+    if (verticalBarDrug.isMouseOn) {
+      const { y } = verticalBarDrug.movementPosition
+      const scrollHeight = scrollSize.height
+      const containerHeight = containerSize.height
+      const percent = y / containerHeight
+      const scrollAmount = scrollHeight * percent
+      addScroll(0, scrollAmount)
+    }
+    if (horizontalBarDrug.isMouseOn) {
+      const { x } = horizontalBarDrug.movementPosition
+      const scrollWidth = scrollSize.width
+      const containerWidth = containerSize.width
+      const percent = x / containerWidth
+      const scrollAmount = scrollWidth * percent
+      addScroll(scrollAmount, 0)
+    }
+  }, [
+    scrollSize,
+    horizontalBarDrug.movementPosition,
+    verticalBarDrug.movementPosition
+  ])
+
   const addScroll = useCallback(
     (deltaX: number, deltaY: number) => {
       const scrollHeight = scrollSize.height
@@ -91,22 +112,6 @@ const useEmulatedScroll = ({
     },
     [scrollSize, scroll, scrollingTimer]
   )
-
-  useEffect(() => {
-    if (horizontalBarDrug.isMouseOn) {
-      const { y } = horizontalBarDrug.movementPosition
-      addScroll(0, y)
-    }
-    if (verticalBarDrug.isMouseOn) {
-      const { x } = verticalBarDrug.movementPosition
-      addScroll(x, 0)
-    }
-  }, [
-    horizontalBarDrug.movementPosition,
-    verticalBarDrug.movementPosition,
-    scrollSize,
-    addScroll
-  ])
 
   const handleWheel = useCallback(
     (event: WheelEvent) => {
@@ -180,6 +185,7 @@ const useEmulatedScroll = ({
       isScrolling: !!scrollingTimer
     },
     {
+      addScroll,
       handleTouchStart,
       handleTouchEnd,
       horizontalBarDrug,

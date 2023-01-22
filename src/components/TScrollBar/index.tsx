@@ -23,7 +23,7 @@ type Props = {
   onMouseUp: MouseEventHandler
   onMouseDown: MouseEventHandler
   onMouseMove: MouseEventHandler
-  onMouseOut: MouseEventHandler
+  onMouseLeave: MouseEventHandler
 }
 
 const defaultColor = 'rgba(100,100,100,.5)'
@@ -42,7 +42,7 @@ const TScrollBar: FC<Props> = ({
   onMouseUp,
   onMouseDown,
   onMouseMove,
-  onMouseOut
+  onMouseLeave
 }) => {
   const [isMouseOver, setIsMouseOver] = useState(false)
 
@@ -50,8 +50,10 @@ const TScrollBar: FC<Props> = ({
     setIsMouseOver(true)
   }, [])
 
-  const handleMouseOut: MouseEventHandler = useCallback(event => {
+  const handleMouseLeave: MouseEventHandler = useCallback(event => {
     setIsMouseOver(false)
+    console.log('out')
+    onMouseLeave(event)
   }, [])
 
   const barPosition = useMemo(
@@ -82,8 +84,7 @@ const TScrollBar: FC<Props> = ({
       onTransitionEnd={handleTransitionEnd}
       opacity={isVisible || isMouseOver ? 1 : 0}
       onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      onMouseMove={onMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       <VerticalBar
         color={color}
@@ -92,7 +93,7 @@ const TScrollBar: FC<Props> = ({
         radius={radius}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
-        onMouseOut={onMouseOut}
+        onMouseMove={onMouseMove}
       />
     </VerticalBarBox>
   ) : (
@@ -103,8 +104,7 @@ const TScrollBar: FC<Props> = ({
       onTransitionEnd={handleTransitionEnd}
       opacity={isVisible || isMouseOver ? 1 : 0}
       onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      onMouseMove={onMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       <HorizontalBar
         color={color}
@@ -113,7 +113,7 @@ const TScrollBar: FC<Props> = ({
         radius={radius}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
-        onMouseOut={onMouseOut}
+        onMouseMove={onMouseMove}
       />
     </HorizontalBarBox>
   )
