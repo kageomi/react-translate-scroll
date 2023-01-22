@@ -7,7 +7,6 @@ import React, {
 import { useInertia } from './useInertia'
 import { useTranslate } from './useTranslate'
 import { useScrollFieldSize } from './useScrollFieldSize'
-import { useDrug } from './useDrug'
 
 type Props = {
   containerRef: React.RefObject<HTMLElement>
@@ -50,8 +49,6 @@ const useEmulatedScroll = ({
   const [setInertiaScroll, cancelInertiaScroll] = useInertia()
   const [setTranslate] = useTranslate(innerRef)
   const [containerSize, scrollSize] = useScrollFieldSize(containerRef, innerRef)
-  const [horizontalBarDrug] = useDrug()
-  const [verticalBarDrug] = useDrug()
 
   useEffect(() => {
     setTranslate(scroll)
@@ -70,29 +67,6 @@ const useEmulatedScroll = ({
       containerElm.removeEventListener('touchmove', handleTouchMove)
     }
   }, [touchLog, scrollSize, containerSize, scrollingTimer]) // need to set state being used by handle functions
-
-  useEffect(() => {
-    if (verticalBarDrug.isMouseOn) {
-      const { y } = verticalBarDrug.movementPosition
-      const scrollHeight = scrollSize.height
-      const containerHeight = containerSize.height
-      const percent = y / containerHeight
-      const scrollAmount = scrollHeight * percent
-      addScroll(0, scrollAmount)
-    }
-    if (horizontalBarDrug.isMouseOn) {
-      const { x } = horizontalBarDrug.movementPosition
-      const scrollWidth = scrollSize.width
-      const containerWidth = containerSize.width
-      const percent = x / containerWidth
-      const scrollAmount = scrollWidth * percent
-      addScroll(scrollAmount, 0)
-    }
-  }, [
-    scrollSize,
-    horizontalBarDrug.movementPosition,
-    verticalBarDrug.movementPosition
-  ])
 
   const addScroll = useCallback(
     (deltaX: number, deltaY: number) => {
@@ -187,9 +161,7 @@ const useEmulatedScroll = ({
     {
       addScroll,
       handleTouchStart,
-      handleTouchEnd,
-      horizontalBarDrug,
-      verticalBarDrug
+      handleTouchEnd
     }
   ] as const
 }

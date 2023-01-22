@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { TScrollBar } from './components/TScrollBar'
 import { useEmulatedScroll } from './hooks/useEmulatedScroll'
 import { ScrollState } from './hooks/useEmulatedScroll'
+import { useDrug } from './hooks/useDrug'
 
 type Props = {
   scrollTop?: number
@@ -34,7 +35,7 @@ const TranslateScrollBox: FC<Props> = ({
   const innerRef = useRef<HTMLDivElement>(null)
   const [
     { scroll, containerSize, scrollSize, isScrolling },
-    { handleTouchStart, handleTouchEnd, horizontalBarDrug, verticalBarDrug }
+    { addScroll, handleTouchStart, handleTouchEnd }
   ] = useEmulatedScroll({
     containerRef,
     innerRef,
@@ -47,10 +48,36 @@ const TranslateScrollBox: FC<Props> = ({
     () => ({ top: -1 * scroll.top, left: -1 * scroll.left }),
     [scroll]
   )
+  const [horizontalBarDrug] = useDrug()
+  const [verticalBarDrug] = useDrug()
 
   useEffect(() => {
     onScroll && onScroll(scrollForBar)
   }, [scrollForBar])
+
+  useEffect(() => {
+    if (verticalBarDrug.isMouseOn) {
+      const { y } = verticalBarDrug.movementPosition
+      const scrollHeight = scrollSize.height
+      const containerHeight = containerSize.height
+      const percent = y / containerHeight
+      const scrollAmount = scrollHeight * percent
+      addScroll(0, scrollAmount)
+    }
+    if (horizontalBarDrug.isMouseOn) {
+      const { x } = horizontalBarDrug.movementPosition
+      const scrollWidth = scrollSize.width
+      const containerWidth = containerSize.width
+      const percent = x / containerWidth
+      const scrollAmount = scrollWidth * percent
+      addScroll(scrollAmount, 0)
+    }
+  }, [
+    scrollSize,
+    containerSize,
+    horizontalBarDrug.movementPosition,
+    verticalBarDrug.movementPosition
+  ])
 
   return (
     <TransformScrollBox
