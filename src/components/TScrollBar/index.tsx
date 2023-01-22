@@ -52,7 +52,6 @@ const TScrollBar: FC<Props> = ({
 
   const handleMouseLeave: MouseEventHandler = useCallback(event => {
     setIsMouseOver(false)
-    console.log('out')
     onMouseLeave(event)
   }, [])
 
