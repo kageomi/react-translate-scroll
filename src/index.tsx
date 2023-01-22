@@ -34,7 +34,7 @@ const TranslateScrollBox: FC<Props> = ({
   const innerRef = useRef<HTMLDivElement>(null)
   const [
     { scroll, containerSize, scrollSize, isScrolling },
-    { handleTouchStart, handleTouchEnd }
+    { handleTouchStart, handleTouchEnd, horizontalBarDrug, verticalBarDrug }
   ] = useEmulatedScroll({
     containerRef,
     innerRef,
@@ -69,6 +69,10 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="horizontal"
               isVisible={isScrolling}
+              onMouseMove={verticalBarDrug.onMouseMove}
+              onMouseDown={verticalBarDrug.onMouseDown}
+              onMouseUp={verticalBarDrug.onMouseUp}
+              onMouseOut={verticalBarDrug.onMouseOut}
             />
           )}
           {scrollSize.height > containerSize.height && (
@@ -78,6 +82,10 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="vertical"
               isVisible={isScrolling}
+              onMouseMove={horizontalBarDrug.onMouseMove}
+              onMouseDown={horizontalBarDrug.onMouseDown}
+              onMouseUp={horizontalBarDrug.onMouseUp}
+              onMouseOut={horizontalBarDrug.onMouseOut}
             />
           )}
         </>

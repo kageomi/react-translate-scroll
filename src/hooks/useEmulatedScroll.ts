@@ -7,6 +7,7 @@ import React, {
 import { useInertia } from './useInertia'
 import { useTranslate } from './useTranslate'
 import { useScrollFieldSize } from './useScrollFieldSize'
+import { useDrug } from './useDrug'
 
 type Props = {
   containerRef: React.RefObject<HTMLElement>
@@ -51,6 +52,8 @@ const useEmulatedScroll = ({
   const [setInertiaScroll, cancelInertiaScroll] = useInertia()
   const [setTranslate] = useTranslate(innerRef)
   const [containerSize, scrollSize] = useScrollFieldSize(containerRef, innerRef)
+  const [horizontalBarDrug] = useDrug()
+  const [verticalBarDrug] = useDrug()
 
   useEffect(() => {
     setTranslate(scroll)
@@ -88,6 +91,22 @@ const useEmulatedScroll = ({
     },
     [scrollSize, scroll, scrollingTimer]
   )
+
+  useEffect(() => {
+    if (horizontalBarDrug.isMouseOn) {
+      const { y } = horizontalBarDrug.movementPosition
+      addScroll(0, y)
+    }
+    if (verticalBarDrug.isMouseOn) {
+      const { x } = verticalBarDrug.movementPosition
+      addScroll(x, 0)
+    }
+  }, [
+    horizontalBarDrug.movementPosition,
+    verticalBarDrug.movementPosition,
+    scrollSize,
+    addScroll
+  ])
 
   const handleWheel = useCallback(
     (event: WheelEvent) => {
@@ -162,7 +181,9 @@ const useEmulatedScroll = ({
     },
     {
       handleTouchStart,
-      handleTouchEnd
+      handleTouchEnd,
+      horizontalBarDrug,
+      verticalBarDrug
     }
   ] as const
 }
