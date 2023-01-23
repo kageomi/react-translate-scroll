@@ -9,6 +9,8 @@ type BarProps = {
   display?: string
 }
 
+const DEFAULT_BAR_THICKNESS = 12
+
 const BaseScrollbar: StyledComponent<
   'div',
   any,
@@ -25,7 +27,7 @@ const HorizontalBarBox = styled(BaseScrollbar).attrs<BarProps>(props => ({
   style: {
     display: props.display || 'block',
     width: props.width,
-    height: `${props.thickness || 10}px`,
+    height: `${props.thickness || DEFAULT_BAR_THICKNESS}px`,
     opacity: props.opacity != null ? props.opacity : 0,
     transitionDuration: props.transitionDuration
   }
@@ -37,7 +39,7 @@ const HorizontalBarBox = styled(BaseScrollbar).attrs<BarProps>(props => ({
 const VerticalBarBox = styled(BaseScrollbar).attrs<BarProps>(props => ({
   style: {
     display: props.display || 'block',
-    width: `${props.thickness || 10}px`,
+    width: `${props.thickness || DEFAULT_BAR_THICKNESS}px`,
     height: props.height,
     opacity: props.opacity != null ? props.opacity : 0,
     transitionDuration: props.transitionDuration
