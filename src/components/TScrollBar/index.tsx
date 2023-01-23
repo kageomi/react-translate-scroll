@@ -42,7 +42,7 @@ const TScrollBar: FC<Props> = ({
   radius = 4,
   thickness = 8,
   onTransitionEnd = () => {},
-  transitionDuration = '0.1s',
+  transitionDuration = '0.3s',
   isVisible = true,
   onMouseUpOnBar,
   onMouseDownOnBar,
