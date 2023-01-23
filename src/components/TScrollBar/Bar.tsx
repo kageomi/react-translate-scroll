@@ -14,6 +14,10 @@ const BasicBar: StyledComponent<
   BarInnerProps & React.ComponentType<HTMLDivElement>
 > = styled.div`
   position: absolute;
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
 `
 
 const VerticalBar = styled(BasicBar).attrs<BarInnerProps>(props => ({
