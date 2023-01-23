@@ -3,11 +3,15 @@ import React, {
   MouseEventHandler,
   TransitionEventHandler,
   useCallback,
+  useEffect,
   useMemo,
   useState
 } from 'react'
 import { VerticalBar, HorizontalBar } from './Bar'
 import { VerticalBarBox, HorizontalBarBox } from './BarBox'
+import { useMousePressing } from '../../hooks/useMousePressing'
+
+type Direction = 'top' | 'bottom' | 'left' | 'right'
 
 type Props = {
   color?: string
@@ -20,10 +24,11 @@ type Props = {
   transitionDuration?: string
   isVisible?: boolean
   onTransitionEnd?: TransitionEventHandler
-  onMouseUp: MouseEventHandler
-  onMouseDown: MouseEventHandler
+  onMouseUpOnBar: MouseEventHandler
+  onMouseDownOnBar: MouseEventHandler
   onMouseMove: MouseEventHandler
   onMouseLeave: MouseEventHandler
+  onPressingBlankArea: (elapsedTime: number, direction: Direction) => void
 }
 
 const defaultColor = 'rgba(100,100,100,.5)'
@@ -39,12 +44,48 @@ const TScrollBar: FC<Props> = ({
   onTransitionEnd = () => {},
   transitionDuration = '0.1s',
   isVisible = true,
-  onMouseUp,
-  onMouseDown,
+  onMouseUpOnBar,
+  onMouseDownOnBar,
   onMouseMove,
-  onMouseLeave
+  onMouseLeave,
+  onPressingBlankArea
 }) => {
   const [isMouseOver, setIsMouseOver] = useState(false)
+  const [onMousePressing, elapsedTime, pressingHandlers] = useMousePressing()
+  const [mouseDirection, setMouseDirection] = useState<Direction>('right')
+
+  useEffect(() => {
+    if (!onMousePressing) return
+    onPressingBlankArea(elapsedTime, mouseDirection)
+  }, [onMousePressing, elapsedTime, mouseDirection])
+
+  const handleMouseMove = useCallback(
+    (
+      isHorizontal: boolean,
+      event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) => {
+      const { offsetX, offsetY } = event.nativeEvent
+      const { width, height } = containerSize
+      const size = isHorizontal ? width : height
+      const position = isHorizontal ? offsetX : offsetY
+      const directions = isHorizontal
+        ? (['left', 'right'] as Direction[])
+        : (['top', 'bottom'] as Direction[])
+      const direction = position > size / 2 ? directions[1] : directions[0]
+      setMouseDirection(direction)
+    },
+    [containerSize]
+  )
+
+  const handleMouseDownOnBar: MouseEventHandler = useCallback(event => {
+    event.stopPropagation()
+    onMouseDownOnBar(event)
+  }, [])
+
+  const handleMouseUpOnBar: MouseEventHandler = useCallback(event => {
+    event.stopPropagation()
+    onMouseUpOnBar(event)
+  }, [])
 
   const handleMouseOver: MouseEventHandler = useCallback(event => {
     setIsMouseOver(true)
@@ -84,14 +125,18 @@ const TScrollBar: FC<Props> = ({
       opacity={isVisible || isMouseOver ? 1 : 0}
       onMouseOver={handleMouseOver}
       onMouseLeave={handleMouseLeave}
+      onMouseOut={pressingHandlers.onMouseLeave} //set it into out to avoid run on the scroll bar.
+      onMouseUp={pressingHandlers.onMouseUp}
+      onMouseDown={pressingHandlers.onMouseDown}
+      onMouseMove={event => handleMouseMove(false, event)}
     >
       <VerticalBar
         color={color}
         height={innerBarSize.height}
         position={barPosition.vertical}
         radius={radius}
-        onMouseUp={onMouseUp}
-        onMouseDown={onMouseDown}
+        onMouseUp={handleMouseUpOnBar}
+        onMouseDown={handleMouseDownOnBar}
         onMouseMove={onMouseMove}
       />
     </VerticalBarBox>
@@ -104,14 +149,18 @@ const TScrollBar: FC<Props> = ({
       opacity={isVisible || isMouseOver ? 1 : 0}
       onMouseOver={handleMouseOver}
       onMouseLeave={handleMouseLeave}
+      onMouseOut={pressingHandlers.onMouseLeave} //set it into out to avoid run on the scroll bar.
+      onMouseUp={pressingHandlers.onMouseUp}
+      onMouseDown={pressingHandlers.onMouseDown}
+      onMouseMove={event => handleMouseMove(true, event)}
     >
       <HorizontalBar
         color={color}
         width={innerBarSize.width}
         position={barPosition.horizontal}
         radius={radius}
-        onMouseUp={onMouseUp}
-        onMouseDown={onMouseDown}
+        onMouseUp={handleMouseUpOnBar}
+        onMouseDown={handleMouseDownOnBar}
         onMouseMove={onMouseMove}
       />
     </HorizontalBarBox>
@@ -119,3 +168,4 @@ const TScrollBar: FC<Props> = ({
 }
 
 export { TScrollBar }
+export type { Direction }
