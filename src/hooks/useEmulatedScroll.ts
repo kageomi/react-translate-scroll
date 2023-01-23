@@ -39,12 +39,10 @@ const useEmulatedScroll = ({
     top: -1 * defaultScroll.top,
     left: -1 * defaultScroll.left
   })
-
   const [touchLog, setTouchLog] = useState<TouchLog>({
     start: null,
     previous: null
   })
-
   const [scrollingTimer, setScrollingTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null)
@@ -161,6 +159,7 @@ const useEmulatedScroll = ({
       isScrolling: !!scrollingTimer
     },
     {
+      addScroll,
       handleTouchStart,
       handleTouchEnd
     }
