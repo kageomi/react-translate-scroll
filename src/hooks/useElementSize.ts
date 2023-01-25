@@ -26,7 +26,7 @@ const useElementSize = (ref: React.RefObject<HTMLElement>) => {
     return () => resizeObserver.disconnect()
   }, [ref])
 
-  return [clientSize, scrollSize] as const
+  return [{ clientSize, scrollSize }] as const
 }
 
 export { useElementSize }
