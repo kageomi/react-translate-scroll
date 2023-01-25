@@ -48,7 +48,7 @@ const useEmulatedScroll = ({
   > | null>(null)
   const [setInertiaScroll, cancelInertiaScroll] = useInertia()
   const [setTranslate] = useTranslate(innerRef)
-  const [containerSize, scrollSize] = useScrollFieldSize(containerRef, innerRef)
+  const [containerSize, scrollSize] = useScrollFieldSize(containerRef)
 
   useEffect(() => {
     setTranslate(scroll)
