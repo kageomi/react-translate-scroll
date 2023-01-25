@@ -24,11 +24,11 @@ type Props = {
   transitionDuration?: string
   isVisible?: boolean
   onTransitionEnd?: TransitionEventHandler
-  onMouseUpOnBar: MouseEventHandler
-  onMouseDownOnBar: MouseEventHandler
-  onMouseMove: MouseEventHandler
-  onMouseLeave: MouseEventHandler
-  onPressingBlankArea: (elapsedTime: number, direction: Direction) => void
+  onMouseUpOnBar?: MouseEventHandler
+  onMouseDownOnBar?: MouseEventHandler
+  onMouseMove?: MouseEventHandler
+  onMouseLeave?: MouseEventHandler
+  onPressingBlankArea?: (elapsedTime: number, direction: Direction) => void
 }
 
 const defaultColor = 'rgba(100,100,100,.5)'
@@ -56,7 +56,8 @@ const TScrollBar: FC<Props> = ({
 
   useEffect(() => {
     if (!onMousePressing) return
-    onPressingBlankArea(elapsedTime, mouseDirection)
+    if (onPressingBlankArea != null)
+      onPressingBlankArea(elapsedTime, mouseDirection)
   }, [onMousePressing, elapsedTime, mouseDirection])
 
   const handleMouseMove = useCallback(
@@ -79,12 +80,12 @@ const TScrollBar: FC<Props> = ({
 
   const handleMouseDownOnBar: MouseEventHandler = useCallback(event => {
     event.stopPropagation()
-    onMouseDownOnBar(event)
+    if (onMouseDownOnBar != null) onMouseDownOnBar(event)
   }, [])
 
   const handleMouseUpOnBar: MouseEventHandler = useCallback(event => {
     event.stopPropagation()
-    onMouseUpOnBar(event)
+    if (onMouseUpOnBar != null) onMouseUpOnBar(event)
   }, [])
 
   const handleMouseOver: MouseEventHandler = useCallback(event => {
@@ -93,7 +94,7 @@ const TScrollBar: FC<Props> = ({
 
   const handleMouseLeave: MouseEventHandler = useCallback(event => {
     setIsMouseOver(false)
-    onMouseLeave(event)
+    if (onMouseLeave != null) onMouseLeave(event)
   }, [])
 
   const barPosition = useMemo(
