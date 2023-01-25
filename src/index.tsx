@@ -80,6 +80,23 @@ const TranslateScrollBox: FC<Props> = ({
   }, [scrollForBar])
 
   useEffect(() => {
+    const handleMouseUp = (event: MouseEvent) => {
+      verticalBarDrug.onMouseUp(event)
+      horizontalBarDrug.onMouseUp(event)
+    }
+    const handleMouseMove = (event: MouseEvent) => {
+      verticalBarDrug.onMouseMove(event)
+      horizontalBarDrug.onMouseMove(event)
+    }
+    window.addEventListener('mouseup', handleMouseUp)
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => {
+      window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [verticalBarDrug, horizontalBarDrug])
+
+  useEffect(() => {
     if (verticalBarDrug.isMouseOn) {
       const { y } = verticalBarDrug.movementPosition
       const scrollHeight = scrollSize.height
@@ -120,10 +137,7 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="horizontal"
               isVisible={isScrolling}
-              onMouseMove={horizontalBarDrug.onMouseMove}
               onMouseDownOnBar={horizontalBarDrug.onMouseDown}
-              onMouseUpOnBar={horizontalBarDrug.onMouseUp}
-              onMouseLeave={horizontalBarDrug.onMouseLeave}
               onPressingBlankArea={handlePressing}
             />
           )}
@@ -134,10 +148,7 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="vertical"
               isVisible={isScrolling}
-              onMouseMove={verticalBarDrug.onMouseMove}
               onMouseDownOnBar={verticalBarDrug.onMouseDown}
-              onMouseUpOnBar={verticalBarDrug.onMouseUp}
-              onMouseLeave={verticalBarDrug.onMouseLeave}
               onPressingBlankArea={handlePressing}
             />
           )}
