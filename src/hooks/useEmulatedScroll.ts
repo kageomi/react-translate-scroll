@@ -20,7 +20,7 @@ type Touch = {
   y: number
 }
 
-type ScrollState = {
+type ScrollPosition = {
   top: number
   left: number
 }
@@ -35,7 +35,7 @@ const useEmulatedScroll = ({
   innerRef,
   defaultScroll
 }: Props) => {
-  const [scroll, setScroll] = useState<ScrollState>({
+  const [scroll, setScroll] = useState<ScrollPosition>({
     top: -1 * defaultScroll.top,
     left: -1 * defaultScroll.left
   })
@@ -167,4 +167,4 @@ const useEmulatedScroll = ({
 }
 
 export { useEmulatedScroll }
-export type { ScrollState }
+export type { ScrollPosition }
