@@ -9,14 +9,10 @@ react translate scroll is a component which scroll function is emulated by css t
 
 ## How to use
 ```
-import TranslateScroll from "react-translate-scroll"
+import TranslateScroll, { ScrollEventHandler } from "react-translate-scroll"
 
-type ScrollState = {
-  top: number
-  left: number
-}
 
-const handleScroll = (position: ScrollState) => {
+const handleScroll: ScrollEventHandler = (position) => {
   const { top, left } = position
   console.log(top, left)
 }
