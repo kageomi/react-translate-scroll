@@ -12,6 +12,8 @@ const useDrug = () => {
     y: 0
   })
   const onMouseDown: MouseEventHandler = useCallback(event => {
+    event.preventDefault()
+    event.stopPropagation()
     setIsMouseOn(true)
   }, [])
   const onMouseUp = useCallback((event: MouseEvent) => {
