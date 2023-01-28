@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { TScrollBar, Direction } from '../components/TScrollBar'
 import { useEmulatedScroll } from '../hooks/useEmulatedScroll'
 import { ScrollPosition } from '../hooks/useEmulatedScroll'
-import { useDrug } from '../hooks/useDrug'
+import { useDrag } from '../hooks/useDrag'
 
 type ScrollEventHandler = (position: ScrollPosition) => void
 
@@ -52,8 +52,8 @@ const TranslateScrollBox: FC<Props> = ({
     () => ({ top: -1 * scroll.top, left: -1 * scroll.left }),
     [scroll]
   )
-  const [horizontalBarDrug] = useDrug()
-  const [verticalBarDrug] = useDrug()
+  const [horizontalBarDrag] = useDrag()
+  const [verticalBarDrag] = useDrag()
 
   const handlePressing = useCallback(
     (elapsedTime: number, direction: Direction) => {
@@ -83,12 +83,12 @@ const TranslateScrollBox: FC<Props> = ({
 
   useEffect(() => {
     const handleMouseUp = (event: MouseEvent) => {
-      verticalBarDrug.onMouseUp(event)
-      horizontalBarDrug.onMouseUp(event)
+      verticalBarDrag.onMouseUp(event)
+      horizontalBarDrag.onMouseUp(event)
     }
     const handleMouseMove = (event: MouseEvent) => {
-      verticalBarDrug.onMouseMove(event)
-      horizontalBarDrug.onMouseMove(event)
+      verticalBarDrag.onMouseMove(event)
+      horizontalBarDrag.onMouseMove(event)
     }
     window.addEventListener('mouseup', handleMouseUp)
     window.addEventListener('mousemove', handleMouseMove)
@@ -96,19 +96,19 @@ const TranslateScrollBox: FC<Props> = ({
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [verticalBarDrug, horizontalBarDrug])
+  }, [verticalBarDrag, horizontalBarDrag])
 
   useEffect(() => {
-    if (verticalBarDrug.isMouseOn) {
-      const { y } = verticalBarDrug.movementPosition
+    if (verticalBarDrag.isMouseOn) {
+      const { y } = verticalBarDrag.movementPosition
       const scrollHeight = scrollSize.height
       const containerHeight = containerSize.height
       const percent = y / containerHeight
       const scrollAmount = scrollHeight * percent
       addScroll(0, scrollAmount)
     }
-    if (horizontalBarDrug.isMouseOn) {
-      const { x } = horizontalBarDrug.movementPosition
+    if (horizontalBarDrag.isMouseOn) {
+      const { x } = horizontalBarDrag.movementPosition
       const scrollWidth = scrollSize.width
       const containerWidth = containerSize.width
       const percent = x / containerWidth
@@ -118,8 +118,8 @@ const TranslateScrollBox: FC<Props> = ({
   }, [
     scrollSize,
     containerSize,
-    horizontalBarDrug.movementPosition,
-    verticalBarDrug.movementPosition
+    horizontalBarDrag.movementPosition,
+    verticalBarDrag.movementPosition
   ])
 
   return (
@@ -139,7 +139,7 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="horizontal"
               isVisible={isScrolling}
-              onMouseDownOnBar={horizontalBarDrug.onMouseDown}
+              onMouseDownOnBar={horizontalBarDrag.onMouseDown}
               onPressingBlankArea={handlePressing}
             />
           )}
@@ -150,7 +150,7 @@ const TranslateScrollBox: FC<Props> = ({
               scroll={scrollForBar}
               type="vertical"
               isVisible={isScrolling}
-              onMouseDownOnBar={verticalBarDrug.onMouseDown}
+              onMouseDownOnBar={verticalBarDrag.onMouseDown}
               onPressingBlankArea={handlePressing}
             />
           )}

@@ -5,7 +5,7 @@ type Position = {
   y: number
 }
 
-const useDrug = () => {
+const useDrag = () => {
   const [isMouseOn, setIsMouseOn] = useState(false)
   const [movementPosition, setMovementPosition] = useState<Position>({
     x: 0,
@@ -36,4 +36,4 @@ const useDrug = () => {
   ] as const
 }
 
-export { useDrug }
+export { useDrag }
