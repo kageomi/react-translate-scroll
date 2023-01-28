@@ -26,7 +26,7 @@ const TransformScrollInner = styled.div`
   padding: 0;
 `
 
-const PRESSING_SCROLL_SPEED = 2
+const PRESSING_SCROLL_SPEED = 30
 
 const TranslateScrollBox: FC<Props> = ({
   scrollTop = 0,
@@ -57,24 +57,26 @@ const TranslateScrollBox: FC<Props> = ({
 
   const handlePressing = useCallback(
     (elapsedTime: number, direction: Direction) => {
+      const horizontalSpeed = scrollSize.width / PRESSING_SCROLL_SPEED
+      const verticalSpeed = scrollSize.height / PRESSING_SCROLL_SPEED
       let additional = [0, 0]
       switch (direction) {
         case 'right':
-          additional = [PRESSING_SCROLL_SPEED, 0]
+          additional = [horizontalSpeed, 0]
           break
         case 'left':
-          additional = [-1 * PRESSING_SCROLL_SPEED, 0]
+          additional = [-1 * horizontalSpeed, 0]
           break
         case 'top':
-          additional = [0, -1 * PRESSING_SCROLL_SPEED]
+          additional = [0, -1 * verticalSpeed]
           break
         default:
-          additional = [0, PRESSING_SCROLL_SPEED]
+          additional = [0, verticalSpeed]
           break
       }
       addScroll(additional[0], additional[1])
     },
-    [addScroll]
+    [addScroll, scrollSize]
   )
 
   useEffect(() => {
