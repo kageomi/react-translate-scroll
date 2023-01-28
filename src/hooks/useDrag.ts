@@ -16,6 +16,9 @@ const useDrag = () => {
     event.stopPropagation()
     setIsMouseOn(true)
   }, [])
+  const onClick: MouseEventHandler = useCallback(event => {
+    setIsMouseOn(false)
+  }, [])
   const onMouseUp = useCallback((event: MouseEvent) => {
     setIsMouseOn(false)
   }, [])
@@ -29,6 +32,7 @@ const useDrag = () => {
     {
       isMouseOn,
       movementPosition,
+      onClick,
       onMouseUp,
       onMouseDown,
       onMouseMove
