@@ -11,10 +11,21 @@ react translate scroll is a component which scroll function is emulated by css t
 ```
 import TranslateScroll from "react-translate-scroll"
 
+type ScrollState = {
+  top: number
+  left: number
+}
+
+const handleScroll = (position: ScrollState) => {
+  const { top, left } = position
+  console.log(top, left)
+}
+
 <TranslateScroll
   scrollTop={100}
   scrollLeft={100}
   style={style}
+  onScroll={handleScroll}
 >
   <div>hogehoge<div>
   <div>hogehoge<div>
