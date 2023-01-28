@@ -5,13 +5,15 @@ type Position = {
   y: number
 }
 
-const useDrug = () => {
+const useDrag = () => {
   const [isMouseOn, setIsMouseOn] = useState(false)
   const [movementPosition, setMovementPosition] = useState<Position>({
     x: 0,
     y: 0
   })
   const onMouseDown: MouseEventHandler = useCallback(event => {
+    event.preventDefault()
+    event.stopPropagation()
     setIsMouseOn(true)
   }, [])
   const onMouseUp = useCallback((event: MouseEvent) => {
@@ -34,4 +36,4 @@ const useDrug = () => {
   ] as const
 }
 
-export { useDrug }
+export { useDrag }
