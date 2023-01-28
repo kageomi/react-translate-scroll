@@ -2,15 +2,17 @@ import React, { FC, useRef, useMemo, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { TScrollBar, Direction } from './components/TScrollBar'
 import { useEmulatedScroll } from './hooks/useEmulatedScroll'
-import { ScrollState } from './hooks/useEmulatedScroll'
+import { ScrollPosition } from './hooks/useEmulatedScroll'
 import { useDrug } from './hooks/useDrug'
+
+type ScrollEventHandler = (position: ScrollPosition) => void
 
 type Props = {
   scrollTop?: number
   scrollLeft?: number
   style?: React.CSSProperties
   children?: JSX.Element | JSX.Element[]
-  onScroll?: (position: ScrollState) => void
+  onScroll?: ScrollEventHandler
 }
 
 const TransformScrollBox = styled.div`
@@ -159,3 +161,4 @@ const TranslateScrollBox: FC<Props> = ({
 }
 
 export default TranslateScrollBox
+export type { ScrollEventHandler }
