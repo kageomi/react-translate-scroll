@@ -26,6 +26,7 @@ type Props = {
   onTransitionEnd?: TransitionEventHandler
   onMouseUpOnBar?: MouseEventHandler
   onMouseDownOnBar?: MouseEventHandler
+  onClickOnBar?: MouseEventHandler
   onMouseMove?: MouseEventHandler
   onMouseLeave?: MouseEventHandler
   onPressingBlankArea?: (elapsedTime: number, direction: Direction) => void
@@ -46,6 +47,7 @@ const TScrollBar: FC<Props> = ({
   isVisible = true,
   onMouseUpOnBar,
   onMouseDownOnBar,
+  onClickOnBar,
   onMouseMove,
   onMouseLeave,
   onPressingBlankArea
@@ -77,6 +79,10 @@ const TScrollBar: FC<Props> = ({
     },
     [containerSize]
   )
+
+  const handleMouseClickOnBar: MouseEventHandler = useCallback(event => {
+    if (onClickOnBar != null) onClickOnBar(event)
+  }, [])
 
   const handleMouseDownOnBar: MouseEventHandler = useCallback(event => {
     event.stopPropagation()
@@ -138,6 +144,7 @@ const TScrollBar: FC<Props> = ({
         radius={radius}
         onMouseUp={handleMouseUpOnBar}
         onMouseDown={handleMouseDownOnBar}
+        onClick={handleMouseClickOnBar}
         onMouseMove={onMouseMove}
       />
     </VerticalBarBox>
@@ -162,6 +169,7 @@ const TScrollBar: FC<Props> = ({
         radius={radius}
         onMouseUp={handleMouseUpOnBar}
         onMouseDown={handleMouseDownOnBar}
+        onClick={handleMouseClickOnBar}
         onMouseMove={onMouseMove}
       />
     </HorizontalBarBox>

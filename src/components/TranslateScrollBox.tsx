@@ -141,6 +141,7 @@ const TranslateScrollBox: FC<Props> = ({
               isVisible={isScrolling}
               onMouseDownOnBar={horizontalBarDrag.onMouseDown}
               onPressingBlankArea={handlePressing}
+              onClickOnBar={horizontalBarDrag.onClick}
             />
           )}
           {scrollSize.height > containerSize.height && (
@@ -152,6 +153,7 @@ const TranslateScrollBox: FC<Props> = ({
               isVisible={isScrolling}
               onMouseDownOnBar={verticalBarDrag.onMouseDown}
               onPressingBlankArea={handlePressing}
+              onClickOnBar={verticalBarDrag.onClick}
             />
           )}
         </>
