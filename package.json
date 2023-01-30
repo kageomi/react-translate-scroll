@@ -1,6 +1,6 @@
 {
   "name": "react-translate-scroll",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "simple table component with fixable header for react",
   "main": "dist/index.js",
   "repository": "git@github.com:kageomi/react-translate-scroll.git",
